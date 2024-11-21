@@ -1,0 +1,8 @@
+C:\Learning\Full Stack Learning\Backend\task-management-aspnetcore-webapi\UserService\obj\Debug\net8.0\UserService.csproj.AssemblyReference.cache
+C:\Learning\Full Stack Learning\Backend\task-management-aspnetcore-webapi\UserService\obj\Debug\net8.0\UserService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Learning\Full Stack Learning\Backend\task-management-aspnetcore-webapi\UserService\obj\Debug\net8.0\UserService.AssemblyInfoInputs.cache
+C:\Learning\Full Stack Learning\Backend\task-management-aspnetcore-webapi\UserService\obj\Debug\net8.0\UserService.AssemblyInfo.cs
+C:\Learning\Full Stack Learning\Backend\task-management-aspnetcore-webapi\UserService\obj\Debug\net8.0\UserService.csproj.CoreCompileInputs.cache
+C:\Learning\Full Stack Learning\Backend\task-management-aspnetcore-webapi\UserService\obj\Debug\net8.0\UserService.MvcApplicationPartsAssemblyInfo.cs
+C:\Learning\Full Stack Learning\Backend\task-management-aspnetcore-webapi\UserService\obj\Debug\net8.0\UserService.MvcApplicationPartsAssemblyInfo.cache
+C:\Learning\Full Stack Learning\Backend\task-management-aspnetcore-webapi\UserService\obj\Debug\net8.0\UserService.sourcelink.json
