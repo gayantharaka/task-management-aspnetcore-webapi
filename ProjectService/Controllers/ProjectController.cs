@@ -37,7 +37,7 @@ namespace ProjectService.Controllers
         {
             var project = new Project
             {
-                ProjectName = projectDto.Name,
+                ProjectName = projectDto.ProjectName,
                 Description = projectDto.Description,
                 StartDate = projectDto.StartDate,
                 EndDate = projectDto.EndDate,

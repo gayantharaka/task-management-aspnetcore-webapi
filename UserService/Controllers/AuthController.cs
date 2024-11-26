@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -25,14 +26,14 @@ namespace UserService.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            var existingUser = await _dbContext.Users.FirstOrDefault(u => u.Email == dto.Email);
+            var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (existingUser != null) return BadRequest("User already exists!");
 
             var newUser = new User
             {
-                FullName = dto.FullName,
+                UserName = GenerateUserName(dto.FullName),
                 Email = dto.Email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.password)
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password)
             };
 
             _dbContext.Users.Add(newUser);
@@ -66,7 +67,13 @@ namespace UserService.Controllers
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return Ok{ Token = tokenHandler.WriteToken(token)});
+            return Ok(new { Token = tokenHandler.WriteToken(token) });
         }
+
+        public string GenerateUserName(string fullname)
+        {
+            return fullname.Replace("", ".");
+        }
+
     }
 }
