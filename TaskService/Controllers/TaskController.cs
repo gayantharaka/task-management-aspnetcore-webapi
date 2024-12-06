@@ -28,6 +28,7 @@ namespace TaskService.Controllers
         public async Task<IActionResult> GetAllTasks()
         {
             var tasks = await _dbContext.Tasks.ToListAsync();
+            if(tasks==null) return NotFound();
             return Ok(tasks);
         }
 

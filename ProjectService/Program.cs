@@ -4,6 +4,18 @@ using ProjectService.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin() // Allows requests from any origin
+                  .AllowAnyMethod() // Allows all HTTP methods (GET, POST, etc.)
+                  .AllowAnyHeader(); // Allows all headers
+        });
+});
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
@@ -14,6 +26,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<ProjectDbContext>(option => option.UseSqlServer(connectionString));
 
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

@@ -26,6 +26,8 @@ namespace UserService.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (existingUser != null) return BadRequest("User already exists!");
 
@@ -42,16 +44,18 @@ namespace UserService.Controllers
 
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]LoginDto dto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
 
             if(user == null || !BCrypt.Net.BCrypt.Verify(dto.Password,user.PasswordHash))
                return BadRequest("Invalid credentials");
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+            var key = Encoding.ASCII.GetBytes(/*_configuration["Jwt:Key"]*/"99768ad3d6ab413087633daea9b4e76e");
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -70,9 +74,13 @@ namespace UserService.Controllers
             return Ok(new { Token = tokenHandler.WriteToken(token) });
         }
 
-        public string GenerateUserName(string fullname)
+        [NonAction]
+        private string GenerateUserName(string fullname)
         {
-            return fullname.Replace("", ".");
+            if(string.IsNullOrWhiteSpace(fullname))
+                throw new ArgumentException("Full name cannot be null or empty", nameof(fullname));
+
+            return fullname.Replace(" ", ".").ToLower();
         }
 
     }

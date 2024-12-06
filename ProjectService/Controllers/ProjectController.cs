@@ -21,6 +21,7 @@ namespace ProjectService.Controllers
         public async Task<IActionResult> GetAllProjects()
         {
             var projects = await _dbcontext.Projects.ToListAsync();
+            if(projects==null) return NotFound();
             return Ok(projects);
         }
 
@@ -39,9 +40,9 @@ namespace ProjectService.Controllers
             {
                 ProjectName = projectDto.ProjectName,
                 Description = projectDto.Description,
+                UserId = projectDto.UserId,
                 StartDate = projectDto.StartDate,
-                EndDate = projectDto.EndDate,
-                UserId = projectDto.UserId
+                EndDate = projectDto.EndDate
             };
             await _dbcontext.Projects.AddAsync(project);
             _dbcontext.SaveChangesAsync();
