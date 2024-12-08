@@ -18,7 +18,7 @@ namespace TaskService.Models
         public int ProjectId { get; set; }
 
         [Column("assigned_user_id")]
-        public string? AssignedUserId { get; set; }
+        public int? AssignedUserId { get; set; }
 
         [Column("due_date")]
         public DateOnly? DueDate { get; set; }

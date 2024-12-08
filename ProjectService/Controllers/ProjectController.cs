@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectService.Data;
 using ProjectService.Dtos;
@@ -6,6 +7,7 @@ using ProjectService.Models;
 
 namespace ProjectService.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
@@ -45,7 +47,7 @@ namespace ProjectService.Controllers
                 EndDate = projectDto.EndDate
             };
             await _dbcontext.Projects.AddAsync(project);
-            _dbcontext.SaveChangesAsync();
+            await _dbcontext.SaveChangesAsync();
             return CreatedAtAction(nameof(CreateProject), new { id = project.ProjectId }, project);
         }
 

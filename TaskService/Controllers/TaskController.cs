@@ -6,9 +6,11 @@ using System.Net.Http.Json;
 using TaskService.Data;
 using TaskService.Dtos;
 using TaskService.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TaskService.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase
@@ -38,7 +40,7 @@ namespace TaskService.Controllers
             var task = await _dbContext.Tasks.FindAsync(id);
             if (task == null) NotFound("Task not found");
 
-            var project = await _httpClient.GetFromJsonAsync<Object>($"http://localhost:5002/api/project/{task.ProjectId}");
+            var project = await _httpClient.GetFromJsonAsync<Object>($"http://localhost:5188/api/project/{task.ProjectId}");
 
             return Ok(new { task, project });
         }

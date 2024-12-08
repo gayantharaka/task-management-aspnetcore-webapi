@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TaskService.Dtos
 {
     public class TaskDto
     {
-        public int TaskId { get; set; }
+   //     public int TaskId { get; set; }
 
         [Required(ErrorMessage = "Task title is required")]
         public string TaskTitle { get; set; }
@@ -13,7 +14,7 @@ namespace TaskService.Dtos
         public string? Description { get; set; }
 
         public int ProjectId { get; set; }
-        public string? AssignedUserId { get; set; }
+        public int? AssignedUserId { get; set; }
 
         [Required(ErrorMessage = "Due date is required")]
         public DateOnly? DueDate { get; set; }

@@ -55,7 +55,7 @@ namespace UserService.Controllers
                return BadRequest("Invalid credentials");
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(/*_configuration["Jwt:Key"]*/"99768ad3d6ab413087633daea9b4e76e");
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
