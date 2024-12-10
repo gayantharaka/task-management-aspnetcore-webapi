@@ -47,31 +47,40 @@ namespace UserService.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]LoginDto dto)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
 
-            if(user == null || !BCrypt.Net.BCrypt.Verify(dto.Password,user.PasswordHash))
-               return BadRequest("Invalid credentials");
+            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+                return BadRequest("Invalid credentials");
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
 
+            var audience = _configuration.GetSection("Jwt:Audience").Get<string[]>();
+
+            var claims = new List<Claim>
+            {
+                  new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                  new Claim(ClaimTypes.Email, user.Email),
+                  new Claim(ClaimTypes.Role, user.Role)
+            };
+
+            // Add each audience as a separate claim
+            claims.AddRange(audience.Select(aud => new Claim(JwtRegisteredClaimNames.Aud, aud)));
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier,user.UserId.ToString()),
-                    new Claim(ClaimTypes.Email,user.Email),
-                    new Claim(ClaimTypes.Role,user.Role)
-
-                }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                Issuer = _configuration["Jwt:Issuer"]
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return Ok(new { Token = tokenHandler.WriteToken(token) });
+
         }
 
         [NonAction]

@@ -6,11 +6,12 @@ using System.Net.Http.Json;
 using TaskService.Data;
 using TaskService.Dtos;
 using TaskService.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace TaskService.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase
