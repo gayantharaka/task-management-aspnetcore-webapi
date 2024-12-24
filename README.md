@@ -14,7 +14,6 @@ This repository contains the **backend** of a **Task Management System**, design
 
 #### **JWT Authentication & Authorization**  
 - Secure endpoints ensuring only authenticated users can access their data.  
-- Role-based access control to manage permissions effectively.  
 
 #### **Entity Framework Core**  
 - Efficient and secure interaction with the database.  
